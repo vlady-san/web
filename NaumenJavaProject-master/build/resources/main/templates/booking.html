@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/styleForBooking.css">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Montserrat&display=swap&subset=cyrillic-ext" rel="stylesheet">
+    <title>Booking</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            height: 100vh;
+            background: url("https://wed-msk.ru/wp-content/uploads/2017/11/pan_8.jpg") no-repeat fixed;
+            background-size: cover;
+        }
+        .header{
+            margin: 0;
+            margin-left: 3%;
+        }
+
+        .mainForm{
+            background-color: rgba(255, 255, 255, 0.88);
+            padding: 1.5%;
+            width: 67%;
+            height: 83%;
+            margin-top: 6%;
+            margin-left: 15%;
+        }
+        .left{
+            display: inline-block;
+            vertical-align: top;
+            width: 43%;
+            margin: 0;
+            margin-left: 5%;
+
+        }
+        .tables{
+            margin-top: 1.5%;
+            width:60%;
+            margin-left: 20%;
+        }
+        @media screen and (max-width: 580px) {
+            .left{
+                width: 45%;
+                margin-left: 5%;
+            }
+            .tables{
+                margin: 0;
+                margin-top: 2%;
+                width: 96vw;
+            }
+        }
+
+        .botton{
+            margin: 3%;
+        }
+        .bookBut{
+            padding: 9px;
+            background: #626262;
+            color: white;
+            border: none;
+            margin: 5px;
+
+        }
+
+        .after{
+            padding: 5%;
+            position: absolute;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            background-color: rgba(255, 255, 255, 0.88);
+            width: 30%;
+            height: 33%;
+            margin-top: 13%;
+            margin-left: 28%;
+
+        }
+        input:invalid {
+            border: 0.5px dashed red;
+        }
+
+        input:valid {
+            border: 0.5px solid black;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="intro">
+        <div th:unless="${end}" class="mainForm">
+           <h1 class="header">Бронь столика</h1>
+
+            <div>
+            <div class="left">
+                <form action="#" th:action="@{/selectDate}" th:object="${SelectDateForm}"method="POST">
+                <label for="date">Дата</label>
+                <input path="date" name="date" class="botton" type="date" id="date" th:attr="value=${date}"required>
+                <br>
+
+
+                <lable for="freeTable">Свободные столики</lable>
+                <input id="freeTable" class="bookBut" type="submit" value="Показать">
+                <br>
+                </form>
+                <form action="#" th:action="@{/booking}" th:object="${BookingTable}"method="POST">
+                <label for="table">Выберите стол</label>
+                <select id="table" class="botton" path="tableNum" name="tableNum" required>
+                    <option disabled>Выберите стол</option>
+                    <option th:each="el : ${list}"
+                            th:value="${el}"
+                            th:text="${el}"></option>
+                </select>
+                    <br><br>
+
+            </div>
+
+
+                <div class="left">
+                    <label  for="name">Ваше имя</label>
+                    <input path="name" name="name" class="botton" type="text" id="name" required>
+                    <br>
+                    <label for="phone">Телефон</label>
+                    <input path="phone" name="phone" class="botton" type="text" id="phone" required>
+                    <br>
+                    <label for="time">Время</label>
+                    <input path="time" name="time" class="botton" type="time" id="time" required>
+                    <br>
+                    <input path="date" name="date" class="botton" type="hidden" th:attr="value=${date}">
+                    <br>
+                    <input class="bookBut" type="submit" value="Забронировать">
+                </div>
+
+            </div>
+
+            </form>
+            </div>
+
+        <div  th:unless="${end}" >
+        <img src="https://www.dva-m.ru/wp-content/uploads/2013/04/Biznes-plan-restorana-kafe_5.jpg" class="tables">
+        </div>
+
+        <div th:if="${end}" class="after">
+
+            <span th:text="${bookingTable.getName()}"></span>
+            <span>, вы забронировали столик </span>
+            <span th:text="${bookingTable.getTableNum()}"></span>
+            <span> на </span>
+            <span th:text="${bookingTable.getDate()}"></span>
+            <span> в </span>
+            <span th:text="${bookingTable.getTime()}"></span>
+            <br><br>
+            <span>Спасибо, что выбрали наш ресторан</span>
+            <br><br>
+            <input type="button" class="bookBut"  value="На главную" id="reg" onClick='location.href="/booking"'  >
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
